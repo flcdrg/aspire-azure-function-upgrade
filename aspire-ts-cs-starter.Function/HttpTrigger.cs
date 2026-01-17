@@ -25,16 +25,34 @@ public class HttpTrigger
 
         // Add data to MongoDb
         var database = _client.GetDatabase("auditing");
-        var collection = database.GetCollection<BsonDocument>("logs");
+        var collection = database.GetCollection<AuditEntry>("logs");
 
-        var document = new BsonDocument
-        {
-            { "message", "HTTP trigger function was called." },
-            { "timestamp", DateTime.UtcNow }
-        };
+        var document = GetDocument();
 
         collection.InsertOne(document);
-        
+
         return new OkObjectResult("Welcome to Azure Functions!");
     }
+
+    private static AuditEntry GetDocument()
+    {
+        return new AuditEntry
+            {
+            Message = "Function invoked"
+        };
+    }
+}
+
+public class AuditEntry
+{
+    private string _message;
+    public ObjectId Id { get; set; }
+
+    public required string Message
+    {
+        get => _message;
+        set => _message = value ?? string.Empty;
+    }
+
+    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 }

@@ -10,9 +10,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\aspire-ts-cs-starter.Server\aspire-ts-cs-starter.Server.csproj" />
+    <ProjectReference Include="..\aspire-ts-cs-starter.Function/aspire-ts-cs-starter_Function.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.Azure.CosmosDB" Version="13.1.0" />
+    <PackageReference Include="Aspire.Hosting.Azure.Functions" Version="13.1.0" />
     <PackageReference Include="Aspire.Hosting.JavaScript" Version="13.1.0" />
+    <PackageReference Include="Aspire.Hosting.MongoDB" Version="13.1.0" />
   </ItemGroup>
 </Project>

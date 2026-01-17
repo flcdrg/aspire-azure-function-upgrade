@@ -19,12 +19,22 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+// Get Azure Function endpoint
+var functionsEndpoint = app.Configuration.GetValue<string>("Functions_Http");
+
+Console.WriteLine($"Functions HTTP Endpoint: {functionsEndpoint}");
 
 string[] summaries = ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
 
+var httpClient = new HttpClient();
+
 var api = app.MapGroup("/api");
-api.MapGet("weatherforecast", () =>
+api.MapGet("weatherforecast", async () =>
 {
+
+    // Ping Azure Function at /api/HttpTrigger
+    var response = await httpClient.GetAsync($"{functionsEndpoint}/api/HttpTrigger");
+
     var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
